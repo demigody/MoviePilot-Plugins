@@ -4,9 +4,9 @@ describe('V3 plugin client contract', () => {
   it('uses plugin instance id and direct payload with GET query params', async () => {
     const payload = { success: true, status: 'running', data: 'preserve payload data' }
     const api = { get: vi.fn().mockResolvedValue(payload) }
-    const request = createClient(api, 'EmbyCollectionSync_2')
+    const request = createClient(api, 'MediaLibraryPlaylistManager_2')
     expect(await request('get', 'job', { job_id: 'job-1' })).toBe(payload)
-    expect(api.get).toHaveBeenCalledWith('plugin/EmbyCollectionSync_2/job', expect.objectContaining({ params: { job_id: 'job-1' }, timeout: 25000 }))
+    expect(api.get).toHaveBeenCalledWith('plugin/MediaLibraryPlaylistManager_2/job', expect.objectContaining({ params: { job_id: 'job-1' }, timeout: 25000 }))
   })
   it('rejects success:false even for HTTP 200, preserving granular error status', async () => {
     const request = createClient({ post: vi.fn().mockResolvedValue({ success: false, status: 'error', error_code: 'conflict', error: '片单已更新' }) })

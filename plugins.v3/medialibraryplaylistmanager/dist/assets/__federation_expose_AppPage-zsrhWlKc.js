@@ -1,0 +1,1 @@
+import{importShared as r}from"./__federation_fn_import-E6wRZccp.js";import a from"./__federation_expose_Page-Bd0_OAeS.js";const{normalizeProps:o,guardReactiveProps:t,openBlock:s,createBlock:c}=await r("vue"),l=Object.assign({inheritAttrs:!1},{__name:"AppPage",setup(p){return(e,n)=>(s(),c(a,o(t(e.$attrs)),null,16))}});export{l as default};

@@ -29,7 +29,7 @@ export default defineConfig(({ command }) => ({
     vue(),
     sourceManifest(),
     federation({
-      name: 'EmbyCollectionSync',
+      name: 'MediaLibraryPlaylistManager',
       filename: 'remoteEntry.js',
       exposes: { './Page': './src/Page.vue', './AppPage': './src/AppPage.vue', './Config': './src/Config.vue', './MediaActions': './src/MediaActions.vue' },
       shared: {

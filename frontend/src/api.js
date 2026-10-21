@@ -21,7 +21,7 @@ export function errorMessage(error) {
   return '操作失败，请稍后重试。'
 }
 
-export function createClient(api, pluginId = 'EmbyCollectionSync') {
+export function createClient(api, pluginId = 'MediaLibraryPlaylistManager') {
   return async function request(method, name, payload, options = {}) {
     if (typeof api?.[method] !== 'function') throw new PluginError('插件 API 尚未连接，请从 MoviePilot V3 插件页面打开。')
     try {

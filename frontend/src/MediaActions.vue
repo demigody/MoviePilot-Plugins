@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { createClient } from './api'
 import SeasonScope from './SeasonScope.vue'
 import { mediaKey, mediaSubtitle, mediaTitle, newList, seasonScopeValid } from './domain'
-const props = defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'EmbyCollectionSync' }, actionKey: String, context: { type: Object, required: true } })
+const props = defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'MediaLibraryPlaylistManager' }, actionKey: String, context: { type: Object, required: true } })
 const emit = defineEmits(['close', 'navigate'])
 const request = (...args) => createClient(props.api, props.pluginId)(...args)
 const lists = ref([]), loading = ref(false), busy = ref(false), error = ref(''), notice = ref(''), name = ref('')

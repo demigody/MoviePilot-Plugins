@@ -19,7 +19,7 @@ describe('candidate requests', () => {
     const c = create(post)
     await c.run('library-media', { server_id: 'Emby', media_type: 'tv' })
     expect(c.items.value).toEqual([series]); expect(c.status.value).toBe('success')
-    expect(post).toHaveBeenCalledWith('plugin/EmbyCollectionSync/library-media', expect.objectContaining({ exclude_keys: ['movie:10'], media_type: 'tv' }), expect.anything())
+    expect(post).toHaveBeenCalledWith('plugin/MediaLibraryPlaylistManager/library-media', expect.objectContaining({ exclude_keys: ['movie:10'], media_type: 'tv' }), expect.anything())
   })
   it('shows empty results as empty rather than failure', async () => {
     const c = create(vi.fn().mockResolvedValue({ success: true, items: [] }))

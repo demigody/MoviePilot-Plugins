@@ -8,7 +8,7 @@ import RunHistory from './RunHistory.vue'
 import { createClient, errorMessage } from './api'
 import { clone, editableList, mediaKey, mediaTitle, mediaSubtitle, mergeCandidates, newList, removeMember, uid, seasonScopeValid, supportsMediaServer, retrySummary } from './domain'
 
-const props = defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'EmbyCollectionSync' }, show_switch: { type: Boolean, default: true } })
+const props = defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'MediaLibraryPlaylistManager' }, show_switch: { type: Boolean, default: true } })
 const emit = defineEmits(['action', 'switch', 'close'])
 const request = (...args) => createClient(props.api, props.pluginId)(...args)
 const loading = ref(false), saving = ref(false), savingSettings = ref(false), error = ref(''), notice = ref('')

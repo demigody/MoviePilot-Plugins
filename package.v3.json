@@ -1,10 +1,10 @@
 {
-  "EmbyCollectionSync": {
+  "MediaLibraryPlaylistManager": {
     "name": "媒体库片单管理",
     "description": "Media Library Playlist Manager：管理电影和电视剧片单，支持 TMDB 合集一次性导入与持续关注；支持 Emby、Jellyfin、Plex，按媒体库同步合集或播放列表，并提供预览、创建、增删、校验、排序和重排，可选自动订阅及入库后自动同步。",
     "labels": "片单,TMDB,媒体库,合集,播放列表,Emby,Jellyfin,Plex",
     "version": "1.0.1",
-    "icon": "embycollectionsync.png",
+    "icon": "medialibraryplaylistmanager.png",
     "author": "demigody",
     "level": 1,
     "system_version": ">=3.0.0",

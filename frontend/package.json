@@ -1,5 +1,5 @@
 {
-  "name": "emby-collection-sync-frontend",
+  "name": "media-library-playlist-manager-frontend",
   "private": true,
   "version": "1.0.1",
   "type": "module",

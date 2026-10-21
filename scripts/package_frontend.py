@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "frontend" / "dist" / "assets"
-TARGET = ROOT / "plugins.v3" / "embycollectionsync" / "dist" / "assets"
+TARGET = ROOT / "plugins.v3" / "medialibraryplaylistmanager" / "dist" / "assets"
 
 
 def digest(path):

@@ -1,0 +1,39 @@
+{
+  "version": "1.0.1",
+  "sources": {
+    "src/AddMedia.vue": "ff504491224fafd23abce3814a9b0fe3ed749272eaddb36380b364ce6fba2f68",
+    "src/api.js": "a146a044b05fc875402d23b480f628a03f0f4cb326f60b3add4f798163fdf6c8",
+    "src/AppPage.vue": "73ed9375e0a1fa1a533e7e72dcb77cb74532bc349232e205f3667862bb7d2d78",
+    "src/Config.vue": "e4fe01eb2a27f8606fbf20b4d3bba2eb7ea46a392b9d91a853a427d53b0a5c43",
+    "src/domain.js": "e34de9fe43025993ec619db9724471fa6f8167a5eb157e7411bc3df0df2e6f01",
+    "src/main.js": "c2b3373f8a66bc24f61e16ccbc76cb7e39ceaa5cd94770ba27cc466b86868bd4",
+    "src/MediaActions.vue": "14128c0b73ffc92b33e97f034c0190930ae76e9e2126ef7c6369d35033338141",
+    "src/Page.vue": "1b17f84a3eb87affbf5461ba26bd389910bc28c6b0b2a6e5a0be0a2011637eb1",
+    "src/PlaylistOrder.vue": "40eda7ef2f5d8d4323862d51739a11d84199ed10ae497bb4a1b508786cbf3ee2",
+    "src/RunHistory.vue": "caf909613f8436e2780882737955488e2950c2e2961e94e55b89b6418a134af2",
+    "src/RunResult.vue": "751bb1c0f056a2ab5ac174c236a88209ac2a77faa1721cb47c33fbefd65e0062",
+    "src/RunResults.vue": "df54cbee554cdc837cb49646512df69f83ca89125ad800a07cfef42f659b8d79",
+    "src/SeasonScope.vue": "2d23bad0bcc79b551608e97c048664cfe29f18ab86481f80c72d9cb488aad561",
+    "src/TargetEditor.vue": "e8a4d923693f071aa6bb77bbbe48716ded8e25d1685eea42d483af6981296ade",
+    "src/useCandidates.js": "d3ec38c8fba6de1bc71f3fc36de43b8f38d61c318ffd5092b0dc82c1d39bb73d",
+    "package.json": "33c12492cc8c6990ebb31a57e4ab35deeab9f191c6a076699b6f3eff4a4d7b54",
+    "package-lock.json": "b42e4e65d1a98ba6e8c9951d0bec0e9da0d914a12c3895e8d940c0f7c2a35aff",
+    "vite.config.js": "f89a9cb60dc7f28fa6a649ba0bf36d4fa8900f567c8d711a4523a77b745a6eac",
+    "index.html": "aa71a71b93e3ee57aeb0d79aa24938b8103e4dfaf0a45e44abc559499d07689a",
+    "postcss.config.js": "f35b8068e9bff2d40eedd124e1dff5957a802f0b9a16f21e4fa0cedf1036205f"
+  },
+  "assets": {
+    "date-C_GPfsLS.js": "70e9654bb03eb69b056c944edf4e6b382a66385332d2225dc0b2445c6471349b",
+    "index-BspavVoo.js": "9aa489d780fe95e5d3a00f082ee8d3a3874593f6a81bedd94b634a7ba5405a3d",
+    "index.html": "a9239a25f79aef9d098a7cea67cf8d8687bb5bf692c2c5849bfcefdd5fbe340c",
+    "remoteEntry.js": "8edfc5a0a86d77832c26baafc45c5bbdcdf6d03f6f0b2047814b4155b928933a",
+    "SeasonScope-BG_59epF.js": "2e5eaea9b21a5ffa85d631abc85578024239b19ad1364a1e48370319c00dd7aa",
+    "source-manifest.json": "d3cd4b03b72afbe495508b14671f6703e0c47f78ad356866e06d36c1602ee8ad",
+    "style-eLabwSP2.css": "a36be9c7da242602c900b303950146c87f668df3684692e3e8d0af973ae1c2f7",
+    "__federation_expose_AppPage-zsrhWlKc.js": "1d7732656f33ded4f16fde89ec8ae64b1e786b638e7aa48c0016e15d286411b9",
+    "__federation_expose_Config-B2yHrN9h.js": "120e44134a38f14d1e20fc246b78cdd8f6270e10c9894191b6369a2ea7584112",
+    "__federation_expose_MediaActions-C616HJIO.js": "c5d1772537c054f09538d41c07908958e4f95f736322eb958247bab2bb23ffd1",
+    "__federation_expose_Page-Bd0_OAeS.js": "376738eeb1a2a5a055770a9a343582f4b40902cac19a2b460e611d653ed05bfc",
+    "__federation_fn_import-E6wRZccp.js": "11a2d68813601dffb4a4bb619cabf25526a7a445b054e418100e24128f6bdca2"
+  }
+}

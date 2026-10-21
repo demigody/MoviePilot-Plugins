@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import Page from './Page.vue'
 defineOptions({ inheritAttrs: false })
-defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'EmbyCollectionSync' }, initialConfig: { type: Object, default: () => ({}) } })
+defineProps({ api: { type: Object, default: () => ({}) }, pluginId: { type: String, default: 'MediaLibraryPlaylistManager' }, initialConfig: { type: Object, default: () => ({}) } })
 const emit = defineEmits(['layout', 'switch', 'close'])
 const page = ref(null)
 const busy = computed(() => Boolean(page.value?.busy))
