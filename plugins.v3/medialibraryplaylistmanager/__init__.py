@@ -79,9 +79,8 @@ class MediaLibraryPlaylistManager(_PluginBase):
     plugin_name = "媒体库片单管理"
     plugin_name_en = "Media Library Playlist Manager"
     plugin_desc = (
-        "管理电影和电视剧片单，支持 TMDB 合集一次性导入与持续关注；"
-        "支持 Emby、Jellyfin、Plex，按媒体库同步合集或播放列表，"
-        "并提供预览、创建、增删、校验、排序和重排，可选自动订阅及入库后自动同步。"
+        "管理电影和电视剧片单，多种片单编辑方式，自动持续更新媒体库。"
+        "支持 Emby、Jellyfin、Plex，自动同步到合集或播放列表，自定义播放顺序。"
     )
     plugin_icon = "medialibraryplaylistmanager.png"
     plugin_version = "1.0.1"
@@ -462,7 +461,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
                 if self.update_config(candidate) is False:
                     raise RuntimeError("配置未保存")
             except Exception:
-                return failure("设置未保存，请检查宿主配置存储后重试", "persistence_error")
+                return failure("设置未保存，请检查MoviePilot配置存储后重试", "persistence_error")
             self._config = candidate
         try:
             from app.sdk.scheduler import update_plugin_job
@@ -472,7 +471,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
             try:
                 update_plugin_job(self._plugin_id())
             except Exception:
-                return failure("设置已保存，但宿主定时任务刷新失败；请重新启用插件", "scheduler_error")
+                return failure("设置已保存，但MoviePilot定时任务刷新失败；请重新启用插件", "scheduler_error")
         return self.api_settings()
 
     def api_export(self, list_id: str = ""):
@@ -563,7 +562,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
             except (TypeError, ValueError, KeyError) as error:
                 return failure(str(error))
             except Exception:
-                return failure("片单未导入，请检查宿主配置存储后重试", "persistence_error")
+                return failure("片单未导入，请检查MoviePilot配置存储后重试", "persistence_error")
 
     def api_lists(self):
         # Read the last committed snapshot without blocking behind network I/O.
@@ -640,7 +639,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
             except (TypeError, ValueError, KeyError) as error:
                 return failure(str(error))
             except Exception:
-                return failure("片单未保存，请检查宿主配置存储后重试", "persistence_error")
+                return failure("片单未保存，请检查MoviePilot配置存储后重试", "persistence_error")
 
     @nonblocking_edit
     def api_members(self, payload: dict = Body(...)):
@@ -668,7 +667,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
             except (TypeError, ValueError, KeyError) as error:
                 return failure(str(error))
             except Exception:
-                return failure("成员未保存，请检查宿主配置存储后重试", "persistence_error")
+                return failure("成员未保存，请检查MoviePilot配置存储后重试", "persistence_error")
 
     def api_servers(self):
         return {"success": True, "items": [{"id": key, "value": key, "name": conf.get("name") or key,
@@ -1245,7 +1244,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
                 exists = self._calls.call(lambda sid=cached_id, payload=payload:
                     self._host.subscription_exists(sid, payload), provider="subscribe_lookup")
                 if not exists["success"] or not isinstance(exists.get("value"), bool):
-                    results.append(failure("宿主订阅状态检查失败，未重复创建订阅", "subscription_check_failed", key=key))
+                    results.append(failure("MoviePilot订阅状态检查失败，未重复创建订阅", "subscription_check_failed", key=key))
                     continue
                 if exists["value"]:
                     results.append({"success": True, "status": "subscribed", "key": key, "already_exists": True})
@@ -1278,7 +1277,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
                     self.save_data("subscription_claims", self._subscription_claims)
                     results.append({"success": True, "status": "subscribed", "key": key})
                 else:
-                    results.append(failure("宿主订阅未成功，请检查订阅页", "subscribe_error", key=key))
+                    results.append(failure("MoviePilot订阅未成功，请检查订阅页", "subscribe_error", key=key))
             else:
                 results.append({**result, "key": key})
         return results
@@ -1308,7 +1307,7 @@ class MediaLibraryPlaylistManager(_PluginBase):
     def get_page(self):
         return [{"component": "VAlert", "props": {"type": "info"}, "text": "请打开 Vue 片单管理页；若页面未加载，请检查 dist 联邦产物安装完整性。"}]
     def get_sidebar_nav(self):
-        # 片单管理通过插件页和媒体卡片弹窗进入，不在宿主左侧导航重复占位。
+        # 片单管理通过插件页和媒体卡片弹窗进入，不在MoviePilot左侧导航重复占位。
         return []
     def get_media_actions(self):
         return [{"key": "media_lists", "title": "加入片单", "icon": "mdi-playlist-plus", "component": "MediaActions",
