@@ -33,34 +33,28 @@ def test_manifest_discovery_covers_every_v3_pyproject() -> None:
     module = _load_install_module()
     expected = sorted((REPO_ROOT / "plugins.v3").glob("*/pyproject.toml"))
 
-    assert expected
     assert module.discover_manifests() == expected
 
 
-def test_manifest_platforms_default_to_product_matrix() -> None:
+def test_manifest_platforms_default_to_product_matrix(tmp_path: Path) -> None:
     """未声明窄平台的普通插件必须覆盖 V3 标准五平台。"""
     module = _load_install_module()
-    manifest = REPO_ROOT / "plugins.v3/tvfirstwatch/pyproject.toml"
+    manifest = _write_manifest(tmp_path, "example")
 
     assert module.manifest_platforms(manifest) == module.SUPPORTED_PLATFORMS
 
 
-def test_animeupscale_dependency_gate_matches_linux_cuda_contract() -> None:
-    """AnimeUpscale 的大体积 CUDA 依赖只在真实支持的 Linux x64 安装。"""
+def test_manifest_can_limit_supported_platforms(tmp_path: Path) -> None:
+    """插件可声明其依赖实际支持的平台子集。"""
     module = _load_install_module()
-    manifest = REPO_ROOT / "plugins.v3/animeupscale/pyproject.toml"
+    manifest = _write_manifest(tmp_path, "example")
+    manifest.write_text(
+        '[project]\nname = "demo"\n'
+        '[tool.moviepilot.dependency-gate]\nplatforms = ["linux-x64"]\n',
+        encoding="utf-8",
+    )
 
     assert module.manifest_platforms(manifest) == frozenset({"linux-x64"})
-
-
-def test_autosubv2_dependency_gate_excludes_unsupported_macos_intel() -> None:
-    """AutoSubv2 只在 Python 3.14 依赖可安装的平台进入真实安装门禁。"""
-    module = _load_install_module()
-    manifest = REPO_ROOT / "plugins.v3/autosubv2/pyproject.toml"
-
-    assert module.manifest_platforms(manifest) == frozenset(
-        {"linux-x64", "linux-arm64", "windows-x64", "macos-arm64"}
-    )
 
 
 def test_installation_uses_fresh_environment_and_host_manifest_semantics(
@@ -69,7 +63,7 @@ def test_installation_uses_fresh_environment_and_host_manifest_semantics(
     """安装命令必须面向隔离解释器并通过 -r 消费原始 pyproject。"""
     module = _load_install_module()
     environment = tmp_path / ".venv"
-    manifest = REPO_ROOT / "plugins.v3/tvfirstwatch/pyproject.toml"
+    manifest = _write_manifest(tmp_path, "example")
 
     create, install, healthcheck = module.installation_commands(
         uv_bin="uv",
@@ -175,7 +169,7 @@ def test_free_threaded_installation_probes_gil_disabled_interpreter(
     """cp314t 必须在安装前确认 venv 解释器确实是 free-threaded 构建。"""
     module = _load_install_module()
     environment = tmp_path / ".venv"
-    manifest = REPO_ROOT / "plugins.v3/tvfirstwatch/pyproject.toml"
+    manifest = _write_manifest(tmp_path, "example")
 
     commands = module.installation_commands(
         uv_bin="uv",
@@ -231,10 +225,30 @@ def test_v3t_opt_outs_reject_manifest_without_package_entry(tmp_path: Path) -> N
 def test_repository_manifests_map_to_package_entries() -> None:
     """仓库内每份 V3 清单都必须能按目录名映射到 package.v3.json 插件 ID。"""
     module = _load_install_module()
+    manifests = module.discover_manifests()
 
-    opt_outs = module.load_free_threaded_opt_outs(module.discover_manifests())
+    opt_outs = module.load_free_threaded_opt_outs(manifests)
+    package = json.loads((REPO_ROOT / "package.v3.json").read_text(encoding="utf-8"))
+    expected = {
+        manifest
+        for manifest in manifests
+        if package[manifest.parent.name].get("v3t") is False
+    }
 
-    assert REPO_ROOT / "plugins.v3/autosubv2/pyproject.toml" in opt_outs
+    assert opt_outs == expected
+
+
+def test_dependency_gate_passes_when_no_plugin_dependencies_are_declared(
+    monkeypatch,
+    capsys,
+) -> None:
+    """没有插件级依赖清单时，依赖安装门禁应明确跳过而非阻断 PR。"""
+    module = _load_install_module()
+    monkeypatch.setattr(module, "discover_manifests", lambda: [])
+    monkeypatch.setattr(sys, "argv", ["check_v3_dependency_install.py", "--platform", "linux-x64"])
+
+    assert module.main() == 0
+    assert "无插件级依赖需要安装" in capsys.readouterr().out
 
 
 def test_build_toolchain_detection_lists_available_commands() -> None:
