@@ -1,8 +1,8 @@
 {
   "MediaLibraryPlaylistManager": {
     "name": "媒体库片单管理",
-    "description": "Media Library Playlist Manager：管理电影和电视剧片单，支持 TMDB 合集一次性导入与持续关注；支持 Emby、Jellyfin、Plex，按媒体库同步合集或播放列表，并提供预览、创建、增删、校验、排序和重排，可选自动订阅及入库后自动同步。",
-    "labels": "片单,TMDB,媒体库,合集,播放列表,Emby,Jellyfin,Plex",
+    "description": "管理电影和电视剧片单，多种片单编辑方式，自动持续更新媒体库。管理电影和电视剧片单，多种片单编辑方式，自动持续更新媒体库。",
+    "labels": "片单,合集,播放列表,播放顺序",
     "version": "1.0.1",
     "icon": "medialibraryplaylistmanager.png",
     "author": "demigody",
@@ -10,7 +10,7 @@
     "system_version": ">=3.0.0",
     "release": true,
     "history": {
-      "v1.0.1": "首次公开发布 MoviePilot V3 媒体库片单管理插件（Media Library Playlist Manager），支持电影和电视剧片单、TMDB 合集导入与关注，以及 Emby、Jellyfin、Plex 的媒体库合集和播放列表同步。"
+      "v1.0.1": "首次公开发布 MoviePilot V3 媒体库片单管理插件（Media Library Playlist Manager）。"
     }
   },
   "AutoSignIn": {
