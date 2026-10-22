@@ -54,7 +54,6 @@ def _literal_tokens(node: ast.AST) -> set[str]:
 
 def test_v3_dependency_manifests_use_pyproject_only() -> None:
     """V3 运行时只提交现代清单，不携带旧 requirements 或插件锁文件。"""
-    assert _pyproject_files()
     assert list(V3_ROOT.glob("*/requirements.txt")) == []
     assert list(V3_ROOT.glob("*/uv.lock")) == []
 

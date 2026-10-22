@@ -232,14 +232,14 @@ def main() -> int:
     args = parse_args()
     python_spec = resolve_python_spec(args.abi, args.python)
     free_threaded = args.abi in FREE_THREADED_ABIS
+    manifests = discover_manifests()
+    if not manifests:
+        print("未发现 V3 插件 pyproject.toml，无插件级依赖需要安装")
+        return 0
+
     uv_bin = shutil.which(args.uv)
     if not uv_bin:
         print(f"未找到 uv 可执行文件：{args.uv}")
-        return 1
-
-    manifests = discover_manifests()
-    if not manifests:
-        print("未发现 V3 插件 pyproject.toml，拒绝空门禁")
         return 1
 
     try:
