@@ -9,13 +9,13 @@ from typing import Any
 
 @lru_cache(maxsize=1)
 def _native_search_chain(chain_type: type) -> Any:
-    """保留宿主完整搜索流程，只将提供方调用切换为严格错误传播。"""
+    """保留MoviePilot完整搜索流程，只将提供方调用切换为严格错误传播。"""
     class StrictSearchChain(chain_type):
         def search_medias(self, meta, media_source=None):
-            """提供方失败须反馈错误，不能被宿主普通入口折叠为空结果。"""
+            """提供方失败须反馈错误，不能被MoviePilot普通入口折叠为空结果。"""
             medias = self.run_module_strict("search_medias", meta=meta, media_source=media_source)
             if medias is None:
-                raise RuntimeError("宿主搜索提供方没有返回结果")
+                raise RuntimeError("MoviePilot搜索提供方没有返回结果")
             return medias
 
     return StrictSearchChain()
@@ -60,7 +60,7 @@ class Host:
 
     @staticmethod
     def search(query: str, media_type: str) -> list[dict]:
-        """跟随 MP 搜索来源，使用宿主身份转换合并作品并保留未关联结果。"""
+        """跟随 MP 搜索来源，使用MoviePilot身份转换合并作品并保留未关联结果。"""
         from app.chain.media import MediaChain
         from app.schemas.types import MediaSource
         chain = _native_search_chain(MediaChain)
@@ -124,7 +124,7 @@ class Host:
                     item.update({"tmdb_id": mapped["tmdb_id"], "media_type": mapped["media_type"],
                         "poster": item.get("poster") or mapped.get("poster"), "year": item.get("year") or mapped.get("year")})
                 except Exception:
-                    item["mapping_error"] = "宿主暂未确认对应的 TMDB 媒体，暂不可加入片单。"
+                    item["mapping_error"] = "MoviePilot暂未确认对应的 TMDB 媒体，暂不可加入片单。"
                 item["source_refs"] = [{"media_source": source, "media_id": source_id}]
                 return item, native_key
 
@@ -166,7 +166,7 @@ class Host:
         if medias is None or (not callable(strict) and not medias):
             # The host's public chain collapses provider failures to []. Do
             # not persist an apparent successful import from that ambiguity.
-            raise ValueError("宿主未返回可确认的 TMDB 合集数据")
+            raise ValueError("MoviePilot未返回可确认的 TMDB 合集数据")
         records = [media_record(media, "movie") for media in medias]
         if any(record["media_type"] != "movie" for record in records):
             raise ValueError("TMDB 合集包含无效的非电影身份")
@@ -200,7 +200,7 @@ class Host:
 
     @staticmethod
     def subscription_exists(subscription_id: int, member: dict) -> bool:
-        """以宿主当前订阅及媒体身份校验缓存，避免删除或 ID 复用造成永久跳过。"""
+        """以MoviePilot当前订阅及媒体身份校验缓存，避免删除或 ID 复用造成永久跳过。"""
         from app.sdk.queries import get_subscription
         from app.schemas.types import MediaSource
         subscription = get_subscription(int(subscription_id))
@@ -326,7 +326,7 @@ class Host:
 
     @staticmethod
     def download_pending(member: dict, submitted_at: str | None = None) -> bool:
-        """兼容旧宿主调用方的布尔状态接口。"""
+        """兼容旧MoviePilot调用方的布尔状态接口。"""
         return bool(Host.download_state(member, submitted_at))
 
     @staticmethod

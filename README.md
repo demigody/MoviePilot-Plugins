@@ -1,97 +1,77 @@
-# MoviePilot-Plugins
+# 媒体库片单管理
 
-MoviePilot 官方插件仓库，也是默认插件市场的源码与索引仓库：
-<https://github.com/jxxghp/MoviePilot-Plugins>
+**Media Library Playlist Manager**
 
-当前开发目标是 MoviePilot V3。新插件开发者不需要先阅读 V2 文档，也不要在多份
-“适配指南”之间自行拼接流程。
+MoviePilot V3 插件，用于创建和维护电影、电视剧片单，并将片单同步到 Emby、Jellyfin 或 Plex 的媒体库合集和播放列表。
 
-## 从这里开始
+## 主要功能
 
-### 开发一个新的 V3 插件
+- 创建和管理电影、电视剧片单，电视剧支持全部季或指定季。
+- 导入 Trakt 公开片单和 Media Library Playlist Manager 插件标准 JSON 文件添加片单。
+- 通过片名搜索、TMDB ID、本地媒体库或 TMDB 合集添加媒体内容。
+- 按媒体库同步合集或播放列表，支持自定义播放顺序。
+- 支持多个服务器和媒体库分别配置同步目标。
+- 预览同步内容，查看同步进度、结果和运行记录。
+- 可选自动订阅缺失内容，以及媒体入库后自动更新合集和播放列表。
+- 支持导出单个片单或全部片单，方便备份迁移和分享片单。
 
-阅读 [MoviePilot 插件开发指南（V3）](./docs/Plugin_Development.md)。这是当前唯一的
-完整主指南，覆盖目录、最小骨架、生命周期、稳定 SDK、配置与数据、V3 数据库事务、
-页面、事件、API、服务、测试和发布。
+## 支持范围
 
-### 把旧插件迁移到 V3
+| 项目 | 支持情况 |
+| --- | --- |
+| MoviePilot | V3 |
+| 媒体服务器 | Emby、Jellyfin、Plex |
+| 同步目标 | 媒体库合集、播放列表 |
+| 电视剧范围 | 全部季、指定季 |
+| 多目标同步 | 支持 |
 
-先阅读主指南，再查看
-[V2 插件迁移到 V3](./docs/V3_Plugin_Adaptation.md)。迁移专题只讲旧导入兼容、
-数据库事务、媒体身份、音乐链、数据迁移和 V3 合同差异，不再承担从零开发说明。
+Plex 合集需要使用单一媒体类型；如果片单包含电影和电视剧，或只选择部分季度，请使用播放列表。
 
-### 维护官方仓库或发布版本
+## 安装与开始使用
 
-查看 [仓库与发布指南](./docs/Repository_Guide.md)，了解索引、版本选择、元数据、
-CI、Release 和跨仓协作边界。
+### 1. 安装插件
 
-### 按具体功能查示例
-
-查看 [常见问题](./docs/FAQ.md)。API 返回与前端调用另见
-[插件 API 专题](./docs/V3_API_Response_Adaptation.md)。
-
-### 仍然维护 V2 插件
-
-[V2 插件开发指南](./docs/V2_Plugin_Development.md) 仅作为历史版本参考。新插件和
-V3 专用实现不要从该文档开始。
-
-## 仓库负责什么
-
-本仓库不是独立运行时：
-
-- `MoviePilot` 负责插件加载、事件分发、API、服务、数据、工作流和 Agent 运行时。
-- `MoviePilot-Frontend` 负责配置页、详情页、仪表板和 Vue 联邦组件渲染。
-- `MoviePilot-Plugins` 负责插件源码、市场索引、图标、测试、文档和发布流程。
-
-## 当前目录
+将插件仓库地址添加到 MoviePilot 的插件市场来源：
 
 ```text
-MoviePilot-Plugins/
-├── plugins.v3/              # 当前 V3 专用插件，新插件放这里
-├── tests/v3/                # V3 插件测试
-├── package.v3.json          # V3 插件市场索引
-├── plugins.v2/              # V2 历史专用实现
-├── package.v2.json          # V2 历史索引
-├── plugins/                 # 更早或跨版本的存量实现
-├── package.json             # 默认历史索引
-├── icons/                   # 插件图标
-├── docs/                    # 开发、迁移、FAQ 和发布文档
-└── .github/                 # CI 与 Release 工作流
+https://github.com/demigody/MoviePilot-Plugins
 ```
 
-V3 新插件使用 `plugins.v3/<plugin_id_lower>/`、`tests/v3/<plugin_id_lower>/` 和
-`package.v3.json`。V3 对旧插件的回退加载只用于兼容存量实现，不是新插件继续写入
-旧目录的理由。
+刷新插件市场，搜索并安装「媒体库片单管理」，然后在插件详情页启用插件。
 
-## 最重要的提交规则
+### 2. 创建片单
 
-- 插件目录名必须是插件主类名的小写形式，主类定义在目录的 `__init__.py`。
-- 新增类和方法需要补充说明职责的注释。
-- `plugin_version`、索引 `version` 和最新 `history` 必须一致。
-- 当前版本历史置顶，所有历史按语义版本降序排列。
-- V3 新代码优先使用 `app.sdk`；不要新增对宿主内部目录布局的无必要依赖。
-- 宿主数据通过 Oper、Chain 或稳定 SDK 访问；不要直接操作宿主 Model，也不要自行持有
-  `SessionFactory` 等裸会话工厂。数据库事务装饰器只用于插件自有表。
-- 插件运行数据写入插件数据目录，不要写回源码目录。
-- V3 第三方依赖写入插件 `pyproject.toml`，不提交插件 `uv.lock`；V1/V2 保留 `requirements.txt`。
-- 第三方依赖安装在宿主共享环境，不能降级或覆盖 MoviePilot 核心依赖，也不要由插件直接执行包管理器。
-- 测试放在仓库根 `tests/v3/<plugin_id>/`，不要放进插件源码目录。
-- 提交前运行 Python 编译、版本门禁、相关测试和 `git diff --check`。
+#### 2.1 手动创建片单
+打开插件页面，点击「新建片单」，然后通过名称搜索、TMDB 合集、本地媒体库或 TMDB ID 添加电影和电视剧。
 
-## 第三方插件仓库
+#### 2.2 导入片单
 
-第三方仓库建议 fork 本项目并保留相同目录和索引结构。MoviePilot 插件市场只读取
-GitHub 仓库的 `main` 分支；仓库地址通过 `PLUGIN_MARKET` 配置，多个地址用逗号
-分隔。
+- Trakt片单：复制 [Trakt](https://trakt.tv) 上的公开片单链接，粘贴进Trakt片单导入栏，读取片单并编辑内容。
+- JSON文件：选择MOVIEPILOT文件导入，将获取到的Media Library Playlist Manager 插件标准 JSON 文件导入，并编辑内容。
 
-请勿开发用于破解 MoviePilot 用户认证，或提供色情、赌博等违法违规内容的插件。
+### 3. 同步到媒体库
 
-## 常用链接
+进入片单的「媒体库同步」设置，选择 MoviePilot 中已经配置好的媒体服务器和媒体库，再选择创建合集或播放列表，最后执行同步。
 
-- [完整 V3 开发指南](./docs/Plugin_Development.md)
-- [V2 插件迁移到 V3](./docs/V3_Plugin_Adaptation.md)
-- [插件 API 专题](./docs/V3_API_Response_Adaptation.md)
-- [仓库与发布指南](./docs/Repository_Guide.md)
-- [FAQ 索引](./docs/FAQ.md)
-- [插件仓测试说明](./tests/README.md)
-- [MoviePilot-Frontend V3 模块联邦指南](https://github.com/jxxghp/MoviePilot-Frontend/blob/v3/docs/module-federation-guide.md)
+### 4. 按需启用自动功能
+
+自动订阅和入库后自动同步默认关闭。确认片单内容和同步目标无误后，再在片单设置中分别开启。
+
+## 使用注意
+
+- 自定义播放顺序通过播放列表功能实现，在插件中配置好各播放列表的影片排序，同步到媒体库时会创建对应的播放列表。
+- 插件通过 TMDB ID 匹配片单内容和媒体库内容。媒体需要完成刮削并获得正确的 TMDB ID，才能正常匹配。
+- 添加内容不会自动订阅或下载，除非在片单设置中主动开启自动订阅。
+- 导入片单不会带入原媒体服务器、媒体库和远端绑定；导入后需要重新选择同步目标。
+- Trakt导入的片单不含播放列表和合集信息，按需创建。播放列表内的媒体顺序默认与片单顺序一致。
+- JSON文件导入的片单会带入合集和播放列表以及播放列表内的媒体顺序。
+- Trakt 仅支持公开片单；私有片单、单集条目和没有 TMDB 身份的条目不会被导入。
+
+## 版本
+
+当前版本：`1.0.1`
+
+## 相关链接
+
+- [项目主页](https://github.com/demigody/MoviePilot-Plugins)
+- [MoviePilot](https://github.com/jxxghp/MoviePilot)
